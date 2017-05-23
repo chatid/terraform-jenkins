@@ -1,9 +1,27 @@
-variable "access_key" {
-  description = "The AWS access key."
+# variables.tf: Configuration values for Jenkins Deployment via Terraform
+
+variable "mode" {
+  description = "The mode to deploy in ('dev','prod')."
+  default = "dev"
+#  default = "prod"
 }
 
-variable "secret_key" {
-  description = "The AWS secret key."
+variable "access_keys" {
+  description = "Table of AWS Access keys by environment"
+  type = "map"
+  default = {
+    dev  = "AKIAJPKUYO4NKN4ZUFUQ"
+    prod = "TODO"
+  }
+}
+
+variable "secret_keys" {
+  description = "Table of AWS Secret keys by environment"
+  type = "map"
+  default = {
+    dev  = "1Qs51RLUb8p/i/MyC784pyqqz7KRREEDVr80Ag07"
+    prod = "TODO"
+  }
 }
 
 variable "region" {
@@ -12,7 +30,7 @@ variable "region" {
 }
 
 variable "availability_zone" {
-  description = "The availability zone"
+  description = "The AWS availability zone"
   default = "us-east-1b"
 }
 
@@ -22,16 +40,17 @@ variable "jenkins_name" {
 }
 
 variable "amis" {
-  description = "Which AMI to spawn. Defaults to the Weave ECS AMIs: https://github.com/weaveworks/integrations/tree/master/aws/ecs."
+  description = "Map region to AMI name to use in that region."
+  type = "map"
   default = {
-    us-east-1 = "ami-49617b23"
-    us-west-1 = "ami-24057b44"
-    us-west-2 = "ami-3cac5c5c"
-    eu-west-1 = "ami-1025aa63"
-    eu-central-1 = "ami-e010f38f"
-    ap-northeast-1 = "ami-54d5cc3a"
-    ap-southeast-1 = "ami-664d9905"
-    ap-southeast-2 = "ami-c2e9c4a1"
+    us-east-1      = "ami-40d28157"
+    us-west-1      = "ami-40d28157"
+    us-west-2      = "ami-40d28157"
+    eu-west-1      = "ami-40d28157"
+    eu-central-1   = "ami-40d28157"
+    ap-northeast-1 = "ami-40d28157"
+    ap-southeast-1 = "ami-40d28157"
+    ap-southeast-2 = "ami-40d28157"
   }
 }
 
@@ -40,11 +59,13 @@ variable "instance_type" {
 }
 
 variable "key_name" {
-  default = "jenkins"
   description = "SSH key name in your AWS account for AWS instances."
+  default = "jenkins"
 }
 
+/*
 variable "s3_bucket" {
-  default = "mycompany-jenkins"
   description = "S3 bucket where remote state and Jenkins data will be stored."
+  default = "chatid_${jenkins_name}"
 }
+*/

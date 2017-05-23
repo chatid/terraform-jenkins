@@ -1,5 +1,2 @@
-*.iml
-.idea/
-init.txt
-.terraform
+terraform.*
 *.pem
