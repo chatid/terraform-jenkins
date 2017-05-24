@@ -40,10 +40,10 @@ variable "jenkins_name" {
 }
 
 variable "amis" {
-  description = "Map region to AMI name to use in that region."
+  description = "Map region name to AMI name to use in that region."
   type = "map"
   default = {
-    us-east-1      = "ami-40d28157"
+    us-east-1      = "ami-e4139df2"
     us-west-1      = "ami-40d28157"
     us-west-2      = "ami-40d28157"
     eu-west-1      = "ami-40d28157"
@@ -60,12 +60,12 @@ variable "instance_type" {
 
 variable "key_name" {
   description = "SSH key name in your AWS account for AWS instances."
-  default = "jenkins"
+  default = "dev-deploy"
 }
 
 /*
 variable "s3_bucket" {
   description = "S3 bucket where remote state and Jenkins data will be stored."
-  default = "chatid_${jenkins_name}"
+  default = "s3-${jenkins_name}"
 }
 */
