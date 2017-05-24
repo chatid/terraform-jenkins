@@ -83,7 +83,7 @@ resource "aws_instance" "jenkins" {
 
   # Retrieve the generated initial admin password
   provisioner "local-exec" {
-    command 	= "ssh ubuntu@${aws_instance.jenkins.public_ip} sudo cat /var/lib/jenkins/secrets/initialAdminPassword >initialAdminPassword"
+    command 	= "ssh ubuntu@${aws_instance.jenkins.public_ip} sudo cat /var/lib/jenkins/secrets/initialAdminPassword >/tmp/initialAdminPassword"
   }
 
 /* TODO: add post-configuration script
