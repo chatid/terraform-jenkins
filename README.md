@@ -12,8 +12,8 @@ environment's ssh-agent to authenticate with AWS:
 ```
 $ ls -alp ~/.ssh/*.pem
 -r-------- 1 user user 1696 May 24 10:05 /home/user/.ssh/dev-deploy.pem
-$ ssh-add /home/kevin/.ssh/dev-deploy.pem
-Identity added: /home/user/.ssh/dev-deploy.pem (/home/kevin/.ssh/dev-deploy.pem)
+$ ssh-add /home/user/.ssh/dev-deploy.pem
+Identity added: /home/user/.ssh/dev-deploy.pem (/home/user/.ssh/dev-deploy.pem)
 $ ssh-add -l 
 2048 SHA256:oLuseNH/JLCwlX6Y5SIJZxmtGvFy0RKdmfuEGit2bw4 /home/user/.ssh/dev-deploy.pem (RSA)
 1024 SHA256:VxFOC/5URCdbmLoxRC7v+9TJdsxHk/R/Hu20j4sGF9c user@host (DSA)
