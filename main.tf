@@ -2,13 +2,6 @@
 #   dependancy: variables.tf for variable definitions
 #   dependancy: appropriate identity cert (${var.key_name}.pem) loaded in ssh-agent
 
-# Deploy on AWS EC2
-provider "aws" {
-  access_key	= "${lookup(var.access_keys, var.mode)}"
-  secret_key	= "${lookup(var.secret_keys, var.mode)}"
-  region     	= "${var.region}"
-}
-
 /* TODO: create S3 bucket and store remote state
 resource "terraform_remote_state" "tfstate" {
   backend = "s3"

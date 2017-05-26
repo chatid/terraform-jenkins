@@ -1,26 +1,25 @@
 # Terraformed Jenkins
 
-Deploy Jenkins 2.0 in a [docker container](https://hub.docker.com/r/library/jenkins/tags/) on an AWS EC2 instance using [Terraform](https://www.terraform.io/).
-
-The terraform script stores the terraform state remotely in an S3 bucket. The Makefile by default sets up a copy of the remote state if it doesn’t exist and then runs either `terraform plan` or `terraform apply` depending on the target.
+Deploy Jenkins 2.0 in an AWS EC2 instance using [Terraform](https://www.terraform.io/).
 
 ## Usage
 
-Before you run the Makefile, you should set the following environment variables to authenticate with AWS:
-```
-$ export AWS_ACCESS_KEY_ID= <your key> # to store and retrieve the remote state in s3.
-$ export AWS_SECRET_ACCESS_KEY= <your secret>
-$ export AWS_DEFAULT_REGION= <your bucket region e.g. us-west-2>
-$ export TF_VAR_access_key=$AWS_ACCESS_KEY # exposed as access_key in terraform scripts
-$ export TF_VAR_secret_key=$AWS_SECRET_ACCESS_KEY # exposed as secret_key in terraform scripts
-```
+The AWS access credentials are stored in the `variables.tf` file, in the "access_keys" and "secret_keys" maps. 
+Multiple versions are stored, indexed by AWS region.
 
-You need to change the default values of `s3_bucket` and `key_name` terraform variables defined in `variables.tf` or set them via environment variables:
+Before you run the Makefile, you should add the appropriate certificate files to the calling 
+environment's ssh-agent to authenticate with AWS:
 ```
-$ export TF_VAR_s3_bucket=<your s3 bucket>
-$ export TF_VAR_key_name=<your keypair name>
+$ ls -alp ~/.ssh/*.pem
+-r-------- 1 user user 1696 May 24 10:05 /home/user/.ssh/dev-deploy.pem
+$ ssh-add /home/kevin/.ssh/dev-deploy.pem
+Identity added: /home/user/.ssh/dev-deploy.pem (/home/kevin/.ssh/dev-deploy.pem)
+$ ssh-add -l 
+2048 SHA256:oLuseNH/JLCwlX6Y5SIJZxmtGvFy0RKdmfuEGit2bw4 /home/user/.ssh/dev-deploy.pem (RSA)
+1024 SHA256:VxFOC/5URCdbmLoxRC7v+9TJdsxHk/R/Hu20j4sGF9c user@host (DSA)
+2048 SHA256:yaw2ehDXhLaMPmGE1TIB67seJdn+qeFkjxCTxp3CMYE user@host (RSA)
+$ 
 ```
-You also need to change the value of `STATEBUCKET` in the Makefile to match that of the `s3_bucket` terraform variable.
 
 ### Run 'terraform plan'
 
@@ -41,18 +40,3 @@ jenkins_public_dns = [ ec2-54-235-229-108.compute-1.amazonaws.com ]
 ```
 You can then reach Jenkins via your browser at `http://ec2-54-235-229-108.compute-1.amazonaws.com`.
 
-## Configuring Backup
-
-After the Jenkins EC2 instance is started, a cronjob is configured to back up Jenkins data to an S3 bucket set via the `s3_bucket` variable (see variables.tf). To accomplish this, a script needs to be copied onto the EC2 instance, therefore, Terraform requires SSH access to the instance.
-
-To grant SSH access to Terraform, place the instance's PEM file in this project's directory. Note that the key file should have the same name as the EC2 keypair, or you can update the `key_file` variable in the connection section of the Terraform EC2 resource (see main.tf).
-
-## Monitoring
-
-The AMI on which Jenkins is run has [Weave Scope](https://www.weave.works/products/weave-scope/) pre-installed. Scope is a Docker monitoring, visualisation and management tool from Weaveworks.
-
-The Scope UI can be reached at the URL of the Jenkins instance on port 4040, e.g. `http://ec2-54-235-229-108.compute-1.amazonaws.com:4040`.
-
-## Credits
-
-* The Makefile idea (and the Makefile itself) is taken from this [blog post](http://karlcode.owtelse.com/blog/2015/09/01/working-with-terraform-remote-statefile/).
