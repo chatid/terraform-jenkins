@@ -71,7 +71,7 @@ resource "aws_instance" "jenkins" {
       user	= "ubuntu"
       agent	= "true"
     }
-    script	= "jenkins-init.sh"
+    script	= "bin/jenkins-init.sh"
   }
 
   # Retrieve the generated initial admin password
@@ -88,7 +88,7 @@ resource "aws_instance" "jenkins" {
       timeout 	= "1m"
       key_file 	= "${var.key_name}.pem"
     }
-    source 	= "templates/cron.sh"
+    source 	= "bin/cron.sh"
     destination	= "/home/ubuntu/tf/cron.sh"
   }
 */
