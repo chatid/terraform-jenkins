@@ -38,5 +38,5 @@ Upon completion, terraform will output the DNS name of Jenkins, e.g.:
 ```
 jenkins_public_dns = [ ec2-54-235-229-108.compute-1.amazonaws.com ]
 ```
-You can then reach Jenkins via your browser at `http://ec2-54-235-229-108.compute-1.amazonaws.com`.
+You can then reach Jenkins via your browser at `http://ec2-54-235-229-108.compute-1.amazonaws.com:8080`.
 
