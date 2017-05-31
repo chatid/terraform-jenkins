@@ -1,0 +1,19 @@
+# /etc/systemd/system/jenkins.service: contol Jenkins as a service with systemd
+#   depends on: /etc/default/jenkins for variable definitions
+
+[Unit]
+Description=Jenkins Daemon
+After=network.target
+Requires=network.target
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/default/jenkins
+ExecStart=/usr/bin/java ${JENKINS_ARGS} -jar ${JENKINS_WAR} --httpPort=${JENKINS_PORT} --httpListenAddress=${HTTP_PORT}
+Restart=always
+User=jenkins
+RestartSec=20
+
+[Install]
+WantedBy=multi-user.target
+
